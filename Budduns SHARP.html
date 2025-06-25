@@ -1,0 +1,289 @@
+import React, { useState } from 'react';
+
+// Main App Component
+const App = () => {
+    // State to manage the currently active SHARP pillar
+    const [activePillar, setActivePillar] = useState('Assets'); // Default to Assets as it has the specific tool
+
+    // Data structure for SHARP pillars and their content
+    const sharpPillars = [
+        {
+            id: 'Staff',
+            title: 'Staff: Meeting Diverse Needs',
+            description: 'Ensuring the well-being and productivity of local government staff, particularly those in remote or regional settings, by providing appropriate support and facilities. This also extends to services that directly impact the community through staff interactions.',
+            services: [
+                'Workforce Accommodation Solutions: Providing fit-for-purpose staff housing in remote areas.',
+                'Staff Development & Training: Building capacity in areas like property management and maintenance planning.',
+                'Community Engagement Training: Equipping staff to effectively interact with and serve the community.',
+                'Health & Safety Protocols: Implementing robust safety measures for staff working in various local government roles.'
+            ],
+            tools: [
+                { name: 'AI-powered Assistant (e.g., Copilot)', description: 'For drafting internal communications, analyzing staff feedback, and generating reports on workforce needs.' },
+                { name: 'Digital Inspection & Compliance Platform (e.g., SafetyCulture)', description: 'For managing staff housing safety checks and ensuring compliance with workplace health and safety standards.' },
+                { name: 'Training Modules Portal', description: 'Online modules for property management, tenant relations, and community service delivery.' }
+            ]
+        },
+        {
+            id: 'Housing',
+            title: 'Housing: Managing the Lifecycle',
+            description: 'Proactive management of all housing assets, with a priority on staff housing, from acquisition to disposal, ensuring they are fit-for-purpose, sustainable, and responsive to community and organizational needs. This pillar also encompasses broader community housing initiatives.',
+            services: [
+                'Staff Housing Management: Overseeing condition assessments, refurbishments, and climate-responsive design for staff accommodations.',
+                'Community Housing Initiatives: Developing and managing affordable housing programs for the wider community (e.g., partnerships for housing shortages).',
+                'Property Maintenance & Upgrades: Sustaining and upgrading assets to ensure ongoing functionality and value across all housing types.',
+                'Housing Policy Development: Creating policies related to housing equity and access.'
+            ],
+            tools: [
+                { name: 'Digital Inspection & Compliance Platform (e.g., SafetyCulture)', description: 'For conducting property inspections, tracking maintenance needs, and ensuring housing safety and compliance (e.g., smoke alarms, pool fencing).' },
+                { name: 'Property Lifecycle Management Dashboard', description: 'A system to track acquisition, maintenance, redevelopment, and disposal stages for all housing assets.' },
+                { name: 'Climate Resilience Assessment Tools', description: 'For evaluating and planning climate-responsive designs and upgrades for housing.' }
+            ]
+        },
+        {
+            id: 'Assets',
+            title: 'Assets: Data-Driven Decisions',
+            description: 'Underpinning all property decisions with robust data, optimizing the performance of diverse property assets including operational facilities, commercial properties, community facilities, and infrastructure, in addition to housing.',
+            services: [
+                'Property Register Management: Maintaining a centralized and real-time database of all property assets.',
+                'Asset Condition Assessments: Regularly assessing the condition of all assets to inform maintenance and investment decisions.',
+                'Portfolio Optimization: Using data-driven tools like SWOT Analysis and Key Performance Criteria to maximize asset value and efficiency.',
+                'Asset Performance Monitoring: Tracking KPIs like occupancy rates, maintenance costs, and service delivery impact.'
+            ],
+            tools: [
+                { name: 'AI-Driven Collaborative Platform (e.g., SharePoint)', description: 'Serving as the backbone for the Property Register, enabling centralized property data, secure access, and data analytics.' },
+                { name: 'Property/Tenancy Management Tool', description: 'This dedicated tool allows local governments to manage property leases, tenancy agreements, track rental payments, and potentially automate related administrative tasks.' },
+                { name: 'Decision-Logic Matrix & Multiple-Criteria Decision Analysis Tools', description: 'Supporting the Property Assessment Committee in making informed decisions about asset management actions.' }
+            ]
+        },
+        {
+            id: 'Resources',
+            title: 'Resources: Training and Capacity Building',
+            description: 'Addressing the challenges of limited resources, particularly in remote settings, by building the capacity of staff and optimizing resource allocation for effective property and service delivery. This includes financial and human resources.',
+            services: [
+                'Property Management Training: Providing specialized training for staff in areas such as maintenance planning, financial management for assets, and tenant relations.',
+                'Budget Integration & Financial Planning: Ensuring effective budget integration aligned with ISO 55001 for asset management.',
+                'Contractor and Supplier Management: Efficiently managing external resources for specialized maintenance and services.',
+                'Resource Allocation Optimization: Developing strategies to maximize the impact of available financial and human resources.'
+            ],
+            tools: [
+                { name: 'AI-powered Assistant (e.g., Copilot)', description: 'Assisting in modeling budget scenarios, drafting training materials, and analyzing resource utilization.' },
+                { name: 'Learning Management System (LMS)', description: 'Hosting online training courses and certifications for property management and related skills.' },
+                { name: 'Budget Management Software', description: 'Tools for tracking expenditures, forecasting, and aligning asset management plans with financial objectives.' }
+            ]
+        },
+        {
+            id: 'Planning',
+            title: 'Planning: Collaboration and Adaptability',
+            description: 'Strategic planning that involves collaboration with various stakeholders (government, private sectors, communities) to address challenges like housing shortages and adapt to changing economic and environmental conditions. This pillar ensures long-term sustainability and responsiveness of local government services.',
+            services: [
+                'Strategic Property Planning: Aligning property decisions with the organization\'s strategic goals and the SHARP Framework.',
+                'Inter-Agency Partnerships: Fostering collaborations with state government and private sectors for housing development and infrastructure projects.',
+                'Climate Adaptability & Sustainability: Integrating sustainability goals and climate resilience into property development and management.',
+                'Community Needs Assessment: Proactively forecasting community and staff needs, considering demographics and climate impacts for service planning.',
+                'Risk Management: Identifying and mitigating risks related to asset deterioration, regulatory compliance, and resource constraints.'
+            ],
+            tools: [
+                { name: 'Geographic Information Systems (GIS)', description: 'For spatial planning, identifying suitable land for development, and mapping community needs.' },
+                { name: 'Project Management Software', description: 'For overseeing collaborative projects with external partners and tracking the progress of strategic initiatives.' },
+                { name: 'Data Analytics Platforms (leveraging SharePoint AI)', description: 'To analyze demographic trends, climate data, and economic indicators to inform long-term planning decisions.' },
+                { name: 'Scenario Planning Tools (supported by Copilot)', description: 'To model different future scenarios for property needs and resource allocation.' }
+            ]
+        }
+    ];
+
+    // Find the content for the active pillar
+    const currentPillarContent = sharpPillars.find(pillar => pillar.id === activePillar);
+
+    // Simple Property/Tenancy Tool Mock-up Component
+    const PropertyTenancyTool = () => {
+        const [propertyName, setPropertyName] = useState('');
+        const [tenantName, setTenantName] = useState('');
+        const [leaseStatus, setLeaseStatus] = useState('');
+        const [message, setMessage] = useState('');
+
+        const handleSubmit = (e) => {
+            e.preventDefault();
+            setMessage(`Simulating save for: Property '${propertyName}', Tenant '${tenantName}', Lease Status: '${leaseStatus}'.`);
+            // In a real application, you would send this data to a backend (e.g., Firestore)
+            // For now, we just display a message.
+            setPropertyName('');
+            setTenantName('');
+            setLeaseStatus('');
+        };
+
+        return (
+            <div className="bg-white p-6 rounded-xl shadow-lg mt-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">Property/Tenancy Management Tool</h3>
+                <p className="text-gray-600 mb-4">Manage property leases, tenant information, and track key details.</p>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label htmlFor="propertyName" className="block text-sm font-medium text-gray-700">Property Name</label>
+                        <input
+                            type="text"
+                            id="propertyName"
+                            value={propertyName}
+                            onChange={(e) => setPropertyName(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[var(--budduns-dark-teal)] focus:border-[var(--budduns-dark-teal)] sm:text-sm"
+                            placeholder="e.g., 123 Main Street"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="tenantName" className="block text-sm font-medium text-gray-700">Tenant Name</label>
+                        <input
+                            type="text"
+                            id="tenantName"
+                            value={tenantName}
+                            onChange={(e) => setTenantName(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[var(--budduns-dark-teal)] focus:border-[var(--budduns-dark-teal)] sm:text-sm"
+                            placeholder="e.g., John Doe"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="leaseStatus" className="block text-sm font-medium text-gray-700">Lease Status</label>
+                        <select
+                            id="leaseStatus"
+                            value={leaseStatus}
+                            onChange={(e) => setLeaseStatus(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[var(--budduns-dark-teal)] focus:border-[var(--budduns-dark-teal)] sm:text-sm"
+                            required
+                        >
+                            <option value="">Select status</option>
+                            <option value="Active">Active</option>
+                            <option value="Expired">Expired</option>
+                            <option value="Vacant">Vacant</option>
+                            <option value="Under Review">Under Review</option>
+                        </select>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-[var(--budduns-dark-teal)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--budduns-dark-teal)]"
+                    >
+                        Save Property/Tenancy Details
+                    </button>
+                </form>
+                {message && (
+                    <div className="mt-4 p-3 bg-[var(--budduns-green)] text-white rounded-md text-sm">
+                        {message}
+                    </div>
+                )}
+                <div className="mt-4 text-xs text-gray-500">
+                    *Note: This is a beta demonstration. Actual data would be stored securely.
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <div className="min-h-screen bg-gray-100 font-sans text-gray-900">
+            {/* Tailwind CSS CDN */}
+            <script src="https://cdn.tailwindcss.com"></script>
+            {/* Inter font from Google Fonts */}
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+            <style>
+                {`
+                :root {
+                    --budduns-dark-teal: #1D4C50;
+                    --budduns-light-blue: #60A5FA;
+                    --budduns-purple: #8B5CF6;
+                    --budduns-pink: #EC4899;
+                    --budduns-yellow: #FBBF24;
+                    --budduns-green: #10B981;
+                }
+                body {
+                    font-family: 'Inter', sans-serif;
+                }
+                `}
+            </style>
+
+            {/* Header Section */}
+            <header className="bg-[var(--budduns-dark-teal)] text-white p-6 shadow-md rounded-b-xl">
+                <div className="container mx-auto text-center">
+                    <h1 className="text-3xl sm:text-4xl font-bold mb-2">SHARP Framework for Local Government Services</h1>
+                    <p className="text-lg sm:text-xl opacity-90">Integrating Innovation with Essential Community Services</p>
+                </div>
+            </header>
+
+            {/* Main Content Area */}
+            <main className="container mx-auto p-4 sm:p-6 mt-6">
+                {/* Introduction */}
+                <section className="bg-white p-6 rounded-xl shadow-lg mb-8">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-4">What is the SHARP Framework for Local Government?</h2>
+                    <p className="text-gray-700 leading-relaxed">
+                        SHARP is a comprehensive solution for managing staff housing and critical assets in remote regions. For local governments, this framework extends to delivering essential community services, ensuring quality, sustainability, and efficiency across all operations. It focuses on five pillars: <span className="font-semibold text-[var(--budduns-dark-teal)]">Staff</span> (meeting diverse needs), <span className="font-semibold text-[var(--budduns-dark-teal)]">Housing</span> (managing lifecycle), <span className="font-semibold text-[var(--budduns-dark-teal)]">Assets</span> (data-driven decisions), <span className="font-semibold text-[var(--budduns-dark-teal)]">Resources</span> (training for limited settings), and <span className="font-semibold text-[var(--budduns-dark-teal)]">Planning</span> (collaboration and adaptability). Supported by integrated technologies, SHARP delivers measurable outcomes for both internal operations and external community services.
+                    </p>
+                </section>
+
+                {/* SHARP Pillars Navigation */}
+                <nav className="bg-white p-4 rounded-xl shadow-lg mb-8 flex flex-wrap justify-center gap-4">
+                    {sharpPillars.map((pillar) => (
+                        <button
+                            key={pillar.id}
+                            onClick={() => setActivePillar(pillar.id)}
+                            className={`
+                                py-3 px-6 rounded-full font-medium text-lg transition-all duration-300 ease-in-out
+                                ${activePillar === pillar.id
+                                    ? 'bg-[var(--budduns-dark-teal)] text-white shadow-md transform scale-105'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-[var(--budduns-light-blue)] hover:text-white'
+                                }
+                            `}
+                        >
+                            {pillar.id}
+                        </button>
+                    ))}
+                </nav>
+
+                {/* Dynamic Content Area */}
+                {currentPillarContent && (
+                    <section className="bg-white p-6 rounded-xl shadow-lg">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-[var(--budduns-dark-teal)] pb-2">
+                            {currentPillarContent.title}
+                        </h2>
+                        <p className="text-gray-700 leading-relaxed mb-6">
+                            {currentPillarContent.description}
+                        </p>
+
+                        <h3 className="text-xl font-semibold text-gray-800 mb-3">Key Services / Focus Areas:</h3>
+                        <ul className="list-disc list-inside space-y-2 text-gray-600 mb-6">
+                            {currentPillarContent.services.map((service, index) => (
+                                <li key={index} className="flex items-start">
+                                    <svg className="h-5 w-5 text-[var(--budduns-green)] mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path>
+                                    </svg>
+                                    {service}
+                                </li>
+                            ))}
+                        </ul>
+
+                        <h3 className="text-xl font-semibold text-gray-800 mb-3">Integrated Tools & Resources:</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {currentPillarContent.tools.map((tool, index) => (
+                                <div key={index} className="bg-gray-50 p-4 rounded-lg shadow-sm border border-gray-200">
+                                    <h4 className="font-bold text-lg text-[var(--budduns-dark-teal)] mb-1">{tool.name}</h4>
+                                    <p className="text-sm text-gray-600">{tool.description}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Specific Tool Section for Assets */}
+                        {activePillar === 'Assets' && <PropertyTenancyTool />}
+                    </section>
+                )}
+            </main>
+
+            {/* Footer Section (optional) */}
+            <footer className="bg-gray-800 text-white p-6 mt-8 rounded-t-xl">
+                <div className="container mx-auto text-center text-sm opacity-80">
+                    <p>&copy; 2025 Budduns. All rights reserved.</p>
+                    <p>Powered by SHARP + Tech Framework</p>
+                    <a href="https://budduns.com.au/" target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:underline">
+                        Visit Budduns.com.au
+                    </a>
+                </div>
+            </footer>
+        </div>
+    );
+};
+
+export default App;
